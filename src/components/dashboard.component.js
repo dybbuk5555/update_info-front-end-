@@ -16,27 +16,45 @@ export default class Dashboard extends Component {
       redirect: null,
       userReady: false,
       currentUser: undefined,
-      cnae: undefined,
-      register: undefined,
-      principle: undefined
+      cnae: [],
+      register: [],
+      principle: []
     };
   }
 
   componentDidMount() {
     const currentUser = AuthService.getCurrentUser();
-    const cnae = CNAE();
-    const register = Register();
-    const principle = Principle();
     
-    if (!currentUser) this.setState({ redirect: "/" });
-    this.setState({ 
-      currentUser: currentUser, 
-      userReady: true,
-      cnae: cnae,
-      register: register,
-      principle: principle 
-    });
+    CNAE().then(
+      res => {
+        this.setState({
+          cnae: res
+        });
+      }
+    );
+    
+    Register().then(
+      res => {
+        this.setState({
+          register: res
+        });
+      }
+    );
 
+    Principle().then(
+      res => {
+        this.setState({
+          principle: res
+        });
+      }
+    );
+
+    if (!currentUser) this.setState({ redirect: "/" });
+    this.setState({
+      currentUser: currentUser,
+      userReady: true,
+    });
+    
     EventBus.on("logout", () => {
       this.logOut();
     });
@@ -59,7 +77,7 @@ export default class Dashboard extends Component {
     }
 
     const { currentUser, cnae, register, principle } = this.state;
-
+    
     return (
       <>
         <nav className="navbar navbar-expand navbar-dark bg-dark">
@@ -76,7 +94,7 @@ export default class Dashboard extends Component {
             <div>
               <header className="jumbotron">
                 <h3>
-                  <strong>{currentUser.username}</strong> {cnae[0]}
+                  <strong>{currentUser.username}</strong>
                 </h3>
               </header>
               <p>
