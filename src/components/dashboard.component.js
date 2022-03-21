@@ -24,7 +24,7 @@ export default class Dashboard extends Component {
 
   componentDidMount() {
     const currentUser = AuthService.getCurrentUser();
-    
+
     CNAE().then(
       res => {
         this.setState({
@@ -32,7 +32,7 @@ export default class Dashboard extends Component {
         });
       }
     );
-    
+
     Register().then(
       res => {
         this.setState({
@@ -54,7 +54,7 @@ export default class Dashboard extends Component {
       currentUser: currentUser,
       userReady: true,
     });
-    
+
     EventBus.on("logout", () => {
       this.logOut();
     });
@@ -77,7 +77,7 @@ export default class Dashboard extends Component {
     }
 
     const { currentUser, cnae, register, principle } = this.state;
-    
+
     return (
       <>
         <nav className="navbar navbar-expand navbar-dark bg-dark">
@@ -96,6 +96,7 @@ export default class Dashboard extends Component {
                 <h3>
                   <strong>{currentUser.username}</strong>
                 </h3>
+                
               </header>
               <p>
                 <strong>Token:</strong>{" "}

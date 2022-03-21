@@ -1,12 +1,11 @@
+import authHeader from './auth-header.js';
 const axios = require('axios');
 
 export default function Principle(cnae, register, annuity) {
     let config = {
         method: 'get',
         url: 'http://localhost:8080/api/principle',
-        headers: {
-            'x-access-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWF0IjoxNjQ3NzMzMzMxLCJleHAiOjE2NDc4MTk3MzF9.xJ15j0KQ114pu2qp7ogR__lBXrCHe8tMlszliE4ai4Q'
-        }
+        headers: authHeader()
     };
 
     if (cnae != null) {
