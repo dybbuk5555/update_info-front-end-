@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { Redirect } from "react-router-dom";
-import AuthService from "../services/auth.service";
-import AuthVerify from "../common/auth-verify";
-import CNAE from "../services/cnae";
-import Register from "../services/register";
-import Principle from "../services/principle";
-import EventBus from "../common/EventBus";
+import AuthService from "../../services/auth.service";
+import AuthVerify from "../../common/auth-verify";
+import CNAE from "../others/cnae";
+import Register from "../others/register";
+import Annuity from "../others/annuity";
+import Principle from "../others/principle";
+import EventBus from "../../common/EventBus";
 
 export default class Dashboard extends Component {
   constructor(props) {
@@ -24,30 +25,6 @@ export default class Dashboard extends Component {
 
   componentDidMount() {
     const currentUser = AuthService.getCurrentUser();
-
-    CNAE().then(
-      res => {
-        this.setState({
-          cnae: res
-        });
-      }
-    );
-
-    Register().then(
-      res => {
-        this.setState({
-          register: res
-        });
-      }
-    );
-
-    Principle().then(
-      res => {
-        this.setState({
-          principle: res
-        });
-      }
-    );
 
     if (!currentUser) this.setState({ redirect: "/" });
     this.setState({
@@ -96,7 +73,9 @@ export default class Dashboard extends Component {
                 <h3>
                   <strong>{currentUser.username}</strong>
                 </h3>
-                
+               <CNAE />
+               <Register />
+               <Annuity />
               </header>
               <p>
                 <strong>Token:</strong>{" "}

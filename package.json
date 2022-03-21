@@ -12,6 +12,7 @@
     "react-dom": "^16.13.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.0",
+    "react-select": "^5.2.2",
     "react-validation": "^3.0.7",
     "request": "^2.88.2",
     "validator": "^12.2.0"

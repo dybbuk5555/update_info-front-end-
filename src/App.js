@@ -4,8 +4,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 import "./App.css";
 
-import Login from "./components/login.component";
-import Dashboard from "./components/dashboard.component";
+import Login from "./components/pages/login.component";
+import Dashboard from "./components/pages/dashboard.component";
 
 class App extends Component {
   render() {

@@ -1,4 +1,4 @@
-import authHeader from './auth-header.js';
+import authHeader from '../../services/auth-header.js';
 const axios = require('axios');
 
 export default function Principle(cnae, register, annuity) {
