@@ -9,8 +9,6 @@ export default class CNAE extends Component {
         super(props)
         this.state = {
             selectOptions: [],
-            id: "",
-            name: ''
         }
     }
 
@@ -30,7 +28,6 @@ export default class CNAE extends Component {
                         "label": JSON.parse(JSON.stringify(response.data))[i].CNAE
                     };
                 }
-
             })
             .catch(function (error) {
                 console.log(error);
@@ -41,8 +38,7 @@ export default class CNAE extends Component {
 
 
     handleChange(e) {
-        console.log(e)
-        this.setState({ id: e.value, name: e.label })
+        localStorage.setItem("cnae", JSON.stringify(e.label));
     }
 
     componentDidMount() {
@@ -52,7 +48,10 @@ export default class CNAE extends Component {
     render() {
         return (
             <div>
-                <Select options={this.state.selectOptions} onChange={this.handleChange.bind(this)} />
+                <Select
+                    options={this.state.selectOptions}
+                    onChange={this.handleChange.bind(this)}
+                    placeholder="CNAE Principal" />
             </div>
         )
     }

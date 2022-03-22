@@ -7,25 +7,34 @@ export default class Annuity extends Component {
         super(props)
         this.state = {
             selectOptions: [],
-            id: "",
-            name: ''
         }
-    }    
-     
+    }
+
     componentDidMount() {
         const options = [{ 'value': 0, 'label': 'adimplente' }, { 'value': 1, 'label': 'inadimplente' }];
         this.setState({ selectOptions: options });
     }
 
-    handleChange(e) {
-        console.log(e)
-        this.setState({ id: e.value, name: e.label })
+    handleChange = (e) => {
+        localStorage.setItem("annuity", JSON.stringify(e.label));
     }
 
     render() {
         return (
             <div>
-                <Select options={this.state.selectOptions} onChange={this.handleChange.bind(this)} />
+                {this.props.isDisabled ?
+                    <Select
+                        options={this.state.selectOptions}
+                        onChange={this.handleChange}
+                        placeholder="Situação da Anuidade (A opção “Com Registro Regional” precisa está marcada)"
+                        isDisabled
+                    />
+                    : <Select
+                        options={this.state.selectOptions}
+                        onChange={this.handleChange}
+                        placeholder="Situação da Anuidade (A opção “Com Registro Regional” precisa está marcada)"
+                    />
+                }
             </div>
         )
     }

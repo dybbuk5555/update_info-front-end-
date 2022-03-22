@@ -9,7 +9,6 @@ export default class Register extends Component {
         super(props)
         this.state = {
             selectOptions: [],
-            value: [],
         }
     }
 
@@ -39,9 +38,13 @@ export default class Register extends Component {
     }
 
 
-    handleChange(e) {
-        console.log(e)
-        this.setState({ value: e })
+    handleChange = (e) => {  
+        const temp = [];
+        for (let i = 0; i < e.length; i ++) {
+            temp[i] = e[i].label;
+        }
+
+        localStorage.setItem("register", JSON.stringify(temp));
     }
 
     componentDidMount() {
@@ -51,7 +54,20 @@ export default class Register extends Component {
     render() {
         return (
             <div>
-                <Select options={this.state.selectOptions} onChange={this.handleChange.bind(this)} isMulti />
+                {this.props.isDisabled ?
+                    <Select
+                        options={this.state.selectOptions}
+                        onChange={this.handleChange}
+                        placeholder="Situação do Registro (A opção “Com Registro Regional” precisa está marcada)"
+                        isMulti
+                        isDisabled
+                    />
+                    : <Select
+                        options={this.state.selectOptions}
+                        onChange={this.handleChange}
+                        placeholder="Situação do Registro (A opção “Com Registro Regional” precisa está marcada)"
+                        isMulti
+                    />}
             </div>
         )
     }
