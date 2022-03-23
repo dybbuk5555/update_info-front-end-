@@ -6,7 +6,7 @@ import { Dropdown } from "react-bootstrap";
 import authHeader from '../../services/auth-header.js';
 import './Table.css';
 
-function Table() {
+function Table(props) {
     /* Varibale Declaration */
     const [userData, setUserData] = useState([]);
     const [copyUserData, setCopyUserData] = useState([]);
@@ -45,8 +45,13 @@ function Table() {
             url: `http://localhost:8080/api/principle?_start=${start}&_limit=${limit}`,
             headers: authHeader()
         };
-
-        
+        if (props.cnae !== "") {
+            config.url = config.url + '&cnae_principal=' + props.cnae;
+            if (props.register !== "") {
+                config.url = config.url + '&situacao_registro=' + props.register + '&situacao_anuidade=' + props.annuity;
+            }
+        }
+        console.log(config.url);
 
         let res = await Axios(config);
         setUserData(res.data.slice(0, sizePerPage));
@@ -57,7 +62,7 @@ function Table() {
     /* React Hooks */
     useEffect(() => {
         fetchUserData();
-    }, []);
+    }, [props]);
 
 
     const renderShowsTotal = (start, to, total) => {

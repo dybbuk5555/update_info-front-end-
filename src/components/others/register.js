@@ -56,6 +56,9 @@ export default class Register extends Component {
             <div>
                 {this.props.isDisabled ?
                     <Select
+                        ref={ref => {
+                            this.selectRef = ref;
+                        }}
                         options={this.state.selectOptions}
                         onChange={this.handleChange}
                         placeholder="Situação do Registro (A opção “Com Registro Regional” precisa está marcada)"
@@ -63,6 +66,9 @@ export default class Register extends Component {
                         isDisabled
                     />
                     : <Select
+                        ref={ref => {
+                            this.selectRef = ref;
+                        }}
                         options={this.state.selectOptions}
                         onChange={this.handleChange}
                         placeholder="Situação do Registro (A opção “Com Registro Regional” precisa está marcada)"

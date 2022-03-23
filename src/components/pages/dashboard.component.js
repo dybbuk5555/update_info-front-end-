@@ -12,6 +12,7 @@ export default class Dashboard extends Component {
   constructor(props) {
     super(props);
 
+    this.filter = this.filter.bind(this);
     this.state = {
       redirect: null,
       userReady: false,
@@ -19,17 +20,16 @@ export default class Dashboard extends Component {
       cnae: "",
       register: "",
       annuity: "",
-      selectedOption: false
+      selectedOption: false,
+      clear: false
     };
   }
 
   componentDidMount() {
     const currentUser = AuthService.getCurrentUser();
-
     localStorage.setItem("cnae", "");
     localStorage.setItem("register", "");
     localStorage.setItem("annuity", "");
-
     if (!currentUser) this.setState({ redirect: "/" });
     this.setState({
       currentUser: currentUser,
@@ -57,16 +57,18 @@ export default class Dashboard extends Component {
     }
   }
 
-  filter = (e) => {
-    this.setState({
+  async filter() {
+    await this.setState({
       cnae: localStorage.getItem("cnae"),
       register: localStorage.getItem("register"),
       annuity: localStorage.getItem("annuity")
     });
   }
 
-  format = (e) => {
-
+  format = () => {
+    this.setState({
+      clear: !(this.state.clear)
+    });
   }
 
   logOut = () => {
@@ -96,7 +98,7 @@ export default class Dashboard extends Component {
         </nav>
         <div className="container mt-3">
           <div className="jumbotron">
-            <CNAE />
+            <CNAE clear={this.state.clear} />
             <div className="col-md-6 m-auto">
               <div className="d-flex justify-content-around">
                 <div className="radio">
@@ -121,9 +123,9 @@ export default class Dashboard extends Component {
                 </div>
               </div>
             </div>
-            <Register isDisabled={this.state.selectedOption} />
+            <Register isDisabled={this.state.selectedOption} clear={this.state.clear} />
             <div className="p-2"></div>
-            <Annuity isDisabled={this.state.selectedOption} />
+            <Annuity isDisabled={this.state.selectedOption} clear={this.state.clear} />
             <div className="p-2"></div>
             <div className="col-md-6 m-auto">
               <div className="d-flex justify-content-around">
