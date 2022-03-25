@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useRef } from 'react';
 import Select from 'react-select';
 import axios from 'axios';
 import authHeader from '../../services/auth-header.js';
@@ -38,9 +38,10 @@ export default class Register extends Component {
     }
 
 
-    handleChange = (e) => {  
+
+    handleChange = (e) => {
         const temp = [];
-        for (let i = 0; i < e.length; i ++) {
+        for (let i = 0; i < e.length; i++) {
             temp[i] = e[i].label;
         }
 
@@ -54,26 +55,13 @@ export default class Register extends Component {
     render() {
         return (
             <div>
-                {this.props.isDisabled ?
-                    <Select
-                        ref={ref => {
-                            this.selectRef = ref;
-                        }}
-                        options={this.state.selectOptions}
-                        onChange={this.handleChange}
-                        placeholder="Situação do Registro (A opção “Com Registro Regional” precisa está marcada)"
-                        isMulti
-                        isDisabled
-                    />
-                    : <Select
-                        ref={ref => {
-                            this.selectRef = ref;
-                        }}
-                        options={this.state.selectOptions}
-                        onChange={this.handleChange}
-                        placeholder="Situação do Registro (A opção “Com Registro Regional” precisa está marcada)"
-                        isMulti
-                    />}
+                <Select
+                    options={this.state.selectOptions}
+                    onChange={this.handleChange}
+                    placeholder="Situação do Registro (A opção “Com Registro Regional” precisa está marcada)"
+                    isMulti
+                    isDisabled={this.props.isDisabled}
+                />
             </div>
         )
     }

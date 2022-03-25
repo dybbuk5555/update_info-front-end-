@@ -51,7 +51,6 @@ function Table(props) {
                 config.url = config.url + '&situacao_registro=' + props.register + '&situacao_anuidade=' + props.annuity;
             }
         }
-        console.log(config.url);
 
         let res = await Axios(config);
         setUserData(res.data.slice(0, sizePerPage));
@@ -92,7 +91,7 @@ function Table(props) {
     return (
         <div className="App table-responsive">
             <div className="react-bootstrap-table container p-0">
-                <h2>QUANTIDADE DE  LINHAS ENCONTRADO: XX</h2>
+                <h5 className="mb-3">RESULTADO  DA BUSCA</h5>
                 {userData.length > 0 ? (
                     <React.Fragment>
                         <BootstrapTable
@@ -198,9 +197,10 @@ function Table(props) {
                         </div>
                     </React.Fragment>
                 ) : (
-                    <i className="fa fa-spinner fa-3x fa-spin" />
+                    <h6>Os resultados da pesquisa estavam vazios.</h6>
                 )}
             </div>
+
         </div>
     );
 }

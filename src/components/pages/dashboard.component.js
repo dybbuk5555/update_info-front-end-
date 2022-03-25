@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
+import axios from "axios";
 import AuthService from "../../services/auth.service";
 import AuthVerify from "../../common/auth-verify";
 import CNAE from "../others/cnae";
@@ -16,25 +16,22 @@ export default class Dashboard extends Component {
     this.state = {
       redirect: null,
       userReady: false,
-      currentUser: undefined,
+      currentUser: null,
       cnae: "",
       register: "",
       annuity: "",
       selectedOption: false,
-      clear: false
+      updateTime: ""
     };
   }
 
   componentDidMount() {
-    const currentUser = AuthService.getCurrentUser();
+    this.currentUser();
+    this.getOptions();
+
     localStorage.setItem("cnae", "");
     localStorage.setItem("register", "");
     localStorage.setItem("annuity", "");
-    if (!currentUser) this.setState({ redirect: "/" });
-    this.setState({
-      currentUser: currentUser,
-      userReady: true,
-    });
 
     EventBus.on("logout", () => {
       this.logOut();
@@ -43,6 +40,18 @@ export default class Dashboard extends Component {
 
   componentWillUnmount() {
     EventBus.remove("logout");
+  }
+
+  async getOptions() {
+    const config = {
+      method: 'get',
+      url: 'http://localhost:8080',
+    };
+
+    let updateTime = await axios(config)
+    this.setState({
+      updateTime: updateTime.data.updateTime
+    })
   }
 
   handleOptionChange = (e) => {
@@ -57,17 +66,18 @@ export default class Dashboard extends Component {
     }
   }
 
+  async currentUser() {
+    await this.setState({
+      currentUser: JSON.parse(localStorage.getItem("user")).username,
+      userReady: true,
+    });
+  }
+
   async filter() {
     await this.setState({
       cnae: localStorage.getItem("cnae"),
       register: localStorage.getItem("register"),
       annuity: localStorage.getItem("annuity")
-    });
-  }
-
-  format = () => {
-    this.setState({
-      clear: !(this.state.clear)
     });
   }
 
@@ -79,26 +89,29 @@ export default class Dashboard extends Component {
   }
 
   render() {
-    if (this.state.redirect) {
-      return <Redirect to={this.state.redirect} />
-    }
-
-    const { currentUser } = this.state;
-
     return (
       <>
         <nav className="navbar navbar-expand navbar-dark bg-dark">
-          <div className="navbar-nav ml-auto">
-            <li className="nav-item">
-              <a href="/" className="nav-link" onClick={this.logOut}>
+          <div className="col-md-2"></div>
+          <div className="navbar-nav col-md-8 d-flex justify-content-center">
+            <div className="nav-item text-light mt-1 ">
+              <h4 >RELATÓRIO DE EMPRESAS - BUSCA POR CNAE/REGISTRO</h4>
+            </div>
+          </div>
+          <div className="navbar-nav col-md-2 d-flex justify-content-end">
+            <li className="nav-item text-light mt-1 mr-4">
+              <h4>{this.state.currentUser}</h4>
+            </li>
+            <li className="nav-item" >
+              <a href="/" className="nav-link text-light" onClick={this.logOut}>
                 LogOut
               </a>
             </li>
           </div>
         </nav>
         <div className="container mt-3">
-          <div className="jumbotron">
-            <CNAE clear={this.state.clear} />
+          <div className="jumbotron pb-4">
+            <CNAE />
             <div className="col-md-6 m-auto">
               <div className="d-flex justify-content-around">
                 <div className="radio">
@@ -123,21 +136,34 @@ export default class Dashboard extends Component {
                 </div>
               </div>
             </div>
-            <Register isDisabled={this.state.selectedOption} clear={this.state.clear} />
+            <Register isDisabled={this.state.selectedOption} />
             <div className="p-2"></div>
-            <Annuity isDisabled={this.state.selectedOption} clear={this.state.clear} />
+            <Annuity isDisabled={this.state.selectedOption} />
             <div className="p-2"></div>
             <div className="col-md-6 m-auto">
               <div className="d-flex justify-content-around">
                 <button type="button" className="btn btn-secondary" onClick={this.filter}>CONSULTAR</button>
-                <button type="button" className="btn btn-secondary" onClick={this.format}>LIMPAR CAMPOS</button>
               </div>
             </div>
           </div>
-          <div className="jumbotron">
-            <Table cnae={this.state.cnae} register={this.state.register} annuity={this.state.annuity} />      
+          <div className="jumbotron p-4">
+            <Table cnae={this.state.cnae} register={this.state.register} annuity={this.state.annuity} />
           </div>
         </div>
+        <nav className="navbar navbar-expand navbar-dark bg-grey">
+          <div className="col-md-4"></div>
+          <div className="col-md-4 navbar-nav d-flex justify-content-center">
+            <div className="nav-item text-dark text-center">
+              <h6 className="mb-0">SISTEMA DE GESTÃO CONSULTA</h6>
+              <h6 className="mb-0">2022</h6>
+            </div>
+          </div>
+          <div className="navbar-nav col-md-4 d-flex justify-content-end">
+            <li className="nav-item text-dark mt-1">
+              <h6>Data de atualização mais recente: {this.state.updateTime}</h6>
+            </li>
+          </div>
+        </nav>
         <AuthVerify logOut={this.logOut} />
       </>
     );

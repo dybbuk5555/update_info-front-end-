@@ -131,13 +131,15 @@
   }
 
  table td {
-    padding: 0.5rem!important;
+    padding: 0.4rem!important;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
  }
 
  table th {
-    padding: 0.5rem!important;
+    padding: 0.4rem!important;
+    text-align: center!important;
+    vertical-align: middle!important;
  }
   

@@ -49,9 +49,6 @@ export default class CNAE extends Component {
         return (
             <div>
                 <Select
-                    ref={ref => {
-                        this.selectRef = ref;
-                    }}
                     options={this.state.selectOptions}
                     onChange={this.handleChange.bind(this)}
                     placeholder="CNAE Principal" />
